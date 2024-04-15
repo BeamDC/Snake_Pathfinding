@@ -95,13 +95,12 @@ int main(){
     char dir;
     
     start_game(width, height);
-    print_screen();
-    move('d');
-    print_screen();
-    move('d');
-    print_screen();
-    move('w');
-    print_screen();
+    for(int i=0; i<100; ++i){
+        char dir;
+        cin >> dir;
+        move(dir);
+        print_screen();
+    }
     
     return 0;
 }
