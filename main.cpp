@@ -3,30 +3,32 @@
 #include <cstdlib>
 using namespace std;
 
-const int width = 9, height = 9;
+const int width = 8, height = 8;
 int screen[height][width];
 deque<pair<int,int>> snake;
+vector<pair<int,int>> possible_spawns;
 pair<int,int> apple;
-//pair<int,int> next_apple;
 
+void find_possible_spawns(){
+    for(int i=0;i<height;++i){
+        for(int j=0;j<width;++j){
+            bool is_valid = true;
+            for(auto segment : snake){
+                if(segment.first == i && segment.second == j){
+                    is_valid = false;
+                }
+            }
+            if(is_valid)possible_spawns.push_back({i,j});
+        }
+    }
+} 
 void spawn_apple(){
     srand(time(0));
     bool valid_spawn = false;
-    int apple_x;
-    int apple_y;
+    int pos = rand() % possible_spawns.size();
+    int apple_x = possible_spawns[pos].first;
+    int apple_y = possible_spawns[pos].second;
 
-    //check that the apple doesnt collide with a segment of the snake
-    while(!valid_spawn){
-        apple_x = rand() % width;
-        apple_y = rand() % height;
-        valid_spawn = true;
-        for(auto& pos : snake){
-            if(pos.first == apple_y && pos.second == apple_x){
-                valid_spawn = false;
-                break;
-            }
-        }
-    }
     apple = {apple_y, apple_x};
     cout << "New Apple @ (" << apple_x << ", " << apple_y << ")\n";
 }
@@ -36,6 +38,8 @@ void eat(){
 }
 void move(char dir){
     pair<int,int> head = snake.front();
+    possible_spawns.clear();
+    find_possible_spawns();
     if(dir == 'w'){
         --head.first;
     }
@@ -49,8 +53,8 @@ void move(char dir){
         ++head.second;
     }
 
-    if (head.first == apple.first 
-        && head.second == apple.second)eat();
+    if (head.first == apple.first && 
+        head.second == apple.second)eat();
     snake.push_front(head);
     snake.pop_back();
 }
@@ -95,12 +99,14 @@ int main(){
     char dir;
     
     start_game(width, height);
-    for(int i=0; i<100; ++i){
-        char dir;
-        cin >> dir;
-        move(dir);
-        print_screen();
-    }
+    print_screen();
     
+    move('d');
+    print_screen();
+    move('d');
+    print_screen();
+    move('w');
+    print_screen();
+
     return 0;
 }
