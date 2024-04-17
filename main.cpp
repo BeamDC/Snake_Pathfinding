@@ -9,6 +9,42 @@ deque<pair<int,int>> snake;
 vector<pair<int,int>> possible_spawns;
 pair<int,int> apple;
 
+void start_game(int width, int height){
+    int head_x = floor(width/2)-1;
+    int head_y = floor(height/2);
+
+    pair <int,int> head = {head_y,head_x};
+    pair <int,int> tail = {head_y,head_x - 1};
+    snake.push_front(head);
+    snake.push_back(tail);
+
+    apple = {snake.front().first, snake.front().second + 2};
+}
+void print_screen(){ 
+    //clear the screen
+    for(int i=0;i<height;++i){
+        for(int j=0;j<width;++j){
+            screen[i][j] = 0;
+        }
+    }
+    
+    //add snake to the screen
+    for(auto pos : snake){
+        screen[pos.first][pos.second] = 1;
+    }
+
+    //add apple to the screen
+    screen[apple.first][apple.second] = 6;
+
+    //display the screen
+    for(int i=0;i<height;++i){
+        for(int j=0;j<width;++j){
+            cout << screen[i][j] << ' ';
+        }
+        cout << '\n';
+    }cout << "\n\n";
+}
+
 void find_possible_spawns(){
     for(int i=0;i<height;++i){
         for(int j=0;j<width;++j){
@@ -57,42 +93,12 @@ void move(char dir){
         head.second == apple.second)eat();
     snake.push_front(head);
     snake.pop_back();
+    print_screen();
 }
 
-void start_game(int width, int height){
-    int head_x = floor(width/2)-1;
-    int head_y = floor(height/2);
-
-    pair <int,int> head = {head_y,head_x};
-    pair <int,int> tail = {head_y,head_x - 1};
-    snake.push_front(head);
-    snake.push_back(tail);
-
-    apple = {snake.front().first, snake.front().second + 2};
-}
-void print_screen(){ 
-    //add snake to the screen
-    for(auto pos : snake){
-        screen[pos.first][pos.second] = 1;
-    }
-
-    //add apple to the screen
-    screen[apple.first][apple.second] = 6;
-
-    //display the screen
-    for(int i=0;i<height;++i){
-        for(int j=0;j<width;++j){
-            cout << screen[i][j] << ' ';
-        }
-        cout << '\n';
-    }cout << "\n\n";
-
-    //clear the screen
-    for(int i=0;i<height;++i){
-        for(int j=0;j<width;++j){
-            screen[i][j] = 0;
-        }
-    }
+//BREADTH FIRST SEARCH
+void bfs(){
+    //not yet
 }
 
 int main(){
@@ -102,11 +108,8 @@ int main(){
     print_screen();
     
     move('d');
-    print_screen();
     move('d');
-    print_screen();
     move('w');
-    print_screen();
 
     return 0;
 }
