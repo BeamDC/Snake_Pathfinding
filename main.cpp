@@ -1,20 +1,19 @@
 #include <bits/stdc++.h>
 #include <ctime>
 #include <cstdlib>
-using namespace std;
 
-const int width = 8, height = 8;
+const int width = 4, height = 4;
 int screen[height][width];
-deque<pair<int,int>> snake;
-vector<pair<int,int>> possible_spawns;
-pair<int,int> apple;
+std::deque<std::pair<int,int>> snake;
+std::vector<std::pair<int,int>> possible_spawns;
+std::pair<int,int> apple;
 
 void start_game(int width, int height){
     int head_x = floor(width/2)-1;
     int head_y = floor(height/2);
 
-    pair <int,int> head = {head_y,head_x};
-    pair <int,int> tail = {head_y,head_x - 1};
+    std::pair <int,int> head = {head_y,head_x};
+    std::pair <int,int> tail = {head_y,head_x - 1};
     snake.push_front(head);
     snake.push_back(tail);
 
@@ -39,10 +38,10 @@ void print_screen(){
     //display the screen
     for(int i=0;i<height;++i){
         for(int j=0;j<width;++j){
-            cout << screen[i][j] << ' ';
+            std::cout << screen[i][j] << ' ';
         }
-        cout << '\n';
-    }cout << "\n\n";
+        std::cout << '\n';
+    }std::cout << "\n\n";
 }
 
 void find_possible_spawns(){
@@ -66,14 +65,14 @@ void spawn_apple(){
     int apple_y = possible_spawns[pos].second;
 
     apple = {apple_y, apple_x};
-    cout << "New Apple @ (" << apple_x << ", " << apple_y << ")\n";
+    std::cout << "New Apple @ (" << apple_x << ", " << apple_y << ")\n";
 }
 void eat(){
     snake.push_back(snake.back());
     spawn_apple();
 }
 void move(char dir){
-    pair<int,int> head = snake.front();
+    std::pair<int,int> head = snake.front();
     possible_spawns.clear();
     find_possible_spawns();
     if(dir == 'w'){
@@ -106,10 +105,12 @@ int main(){
     
     start_game(width, height);
     print_screen();
-    
+
     move('d');
     move('d');
     move('w');
+    move('w');
+    move('a');
 
     return 0;
 }
